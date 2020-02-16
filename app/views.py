@@ -36,9 +36,16 @@ def contact():
         if contactForm.validate_on_submit():
             name = contactForm.name.data
             email = contactForm.email.data
+            subject = contactForm.subject.data
+            message = contactForm.message.data
 
-            flash('Your message has been successfully sent.')
-            return render_template('result.html', name=name, email=email)
+            msg = Message(subject, sender=(name,
+            email),recipients=["to@example.com"])
+            msg.body = message
+            mail.send(msg) 
+
+            flash('Your message has been successfully sent.', 'success')
+            return redirect(url_for('home'))
 
     return render_template('contactform.html', form=contactForm)
 
